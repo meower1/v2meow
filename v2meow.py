@@ -55,6 +55,7 @@ def createconfig():
 #this function will create the vless link
 def createlink():
     print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#name""".replace(" ",""))
+    
 
 generate_variables()
 createconfig()
