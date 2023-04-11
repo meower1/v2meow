@@ -52,12 +52,12 @@ def createconfig():
     with open("/usr/local/etc/xray/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
-#this function will create the vless link
+#this function will create the vless link and start the xray service
 def createlink():
     print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#name""".replace(" ",""))
-    
+    os.system("systemctl restart xray")
+    os.system("systemctl enable xray")
 
 generate_variables()
 createconfig()
-#remember to change the createconfig and replace the destination folder of xray config
 createlink()
