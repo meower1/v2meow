@@ -37,13 +37,24 @@ def generate_variables():
 def createconfig():
     with open("config.json", "r") as f:
         data = json.load(f)
-        #i used the .rstrip() function to get rid of the extra \n it puts at the end of my string
+
+        #uuid
         data["inbounds"][0]["settings"]["clients"][0]["id"] = uuid.rstrip()
+
+        #private_key
+        print(data["inbounds"][0]["streamSettings"]["realitySettings"]["privateKey"])
+        data["inbounds"][0]["streamSettings"]["realitySettings"]["privateKey"] = private_key.rstrip()
+
+        #shortids
+        data["inbounds"][0]["streamSettings"]["realitySettings"]["shortIds"][0] = shortid.rstrip()
+
+        
 
     with open("/Users/meower1/Documents/testdir/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
 
+
 generate_variables()
 createconfig()
-
+#remember to change the createconfig and replace the destination folder of xray config
