@@ -58,6 +58,20 @@ def createlink():
     os.system("systemctl restart xray")
     os.system("systemctl enable xray")
 
+#enables google's tcp bbr
+def enablebbr():
+    if "net.core.default_qdisc=fq" in open("/etc/sysctl.conf").read():
+        print("BBR is already enabled.")
+        return
+    else:
+        print("Enabling BBR...")
+        os.system("echo \"net.core.default_qdisc=fq\" >> /etc/sysctl.conf")
+        os.system("echo \"net.ipv4.tcp_congestion_control=bbr\" >> /etc/sysctl.conf")
+        os.system("sudo sysctl -p")
+
+
+install_xray()
+enablebbr()
 generate_variables()
 createconfig()
 createlink()
