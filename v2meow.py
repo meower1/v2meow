@@ -1,4 +1,4 @@
-#first i must install the xray core v1.8.0
+#this script will make a vless-xtls-utls-reality config
 import os
 import subprocess
 import json
@@ -24,11 +24,11 @@ def generate_variables():
 
     #this section will generate uuid and put it inside uuid variable
     uuid_byte = subprocess.check_output("xray uuid", shell=True)
-    uuid = uuid_byte.decode("utf-8")
+    uuid = uuid_byte.decode("utf-8").rstrip()
 
     #this section will generate shortId and will put it inside shortid variable
     shortid_btye = subprocess.check_output("openssl rand -hex 8", shell=True)
-    shortid = shortid_btye.decode("utf-8")
+    shortid = shortid_btye.decode("utf-8").rstrip()
 
     #this section will get the server's ip and put it inside serverip variable
     serverip_byte = subprocess.check_output("curl ifconfig.me", shell=True)
@@ -42,7 +42,6 @@ def createconfig():
         data["inbounds"][0]["settings"]["clients"][0]["id"] = uuid.rstrip()
 
         #private_key
-        print(data["inbounds"][0]["streamSettings"]["realitySettings"]["privateKey"])
         data["inbounds"][0]["streamSettings"]["realitySettings"]["privateKey"] = private_key.rstrip()
 
         #shortids
@@ -50,11 +49,14 @@ def createconfig():
 
         
 
-    with open("/Users/meower1/Documents/testdir/config.json", "w") as f:
+    with open("/usr/local/etc/xray/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
-
+#this function will create the vless link
+def createlink():
+    print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#name""".replace(" ",""))
 
 generate_variables()
 createconfig()
 #remember to change the createconfig and replace the destination folder of xray config
+createlink()
