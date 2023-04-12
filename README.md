@@ -11,7 +11,9 @@ vless grpc utls reality
 Setup:
 
 1- git clone https://github.com/meower1/v2meow.git
+
 2- cd v2meow
+
 3-sudo python3 v2meow.py
 
 =======================================================================================================================
