@@ -3,8 +3,26 @@ import os
 import subprocess
 import json
 
+print("REMINDER : check the xray config path MEOOW")
+print("REMINDER : check the xray config path MEOOW")
+print("REMINDER : check the xray config path MEOOW")
+print("REMINDER : check the xray config path MEOOW")
+
 def install_xray():
     os.system("bash -c \"$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)\" @ install -u root --version 1.8.0")
+
+#enables google's tcp bbr
+
+
+def enablebbr():
+    if "net.core.default_qdisc=fq" in open("/etc/sysctl.conf").read():
+        print("BBR is already enabled.")
+        return
+    else:
+        print("Enabling BBR...")
+        os.system("echo \"net.core.default_qdisc=fq\" >> /etc/sysctl.conf")
+        os.system("echo \"net.ipv4.tcp_congestion_control=bbr\" >> /etc/sysctl.conf")
+        os.system("sudo sysctl -p")
 
 #this function will generate all the neccesary parameters and assign them to the correct variable 
 def generate_variables():
@@ -35,7 +53,7 @@ def generate_variables():
     serverip = serverip_byte.decode("utf-8")
 
 def createconfig():
-    with open("config.json", "r") as f:
+    with open("configs/config.json", "r") as f:
         data = json.load(f)
 
         #uuid
@@ -48,8 +66,8 @@ def createconfig():
         data["inbounds"][0]["streamSettings"]["realitySettings"]["shortIds"][0] = shortid.rstrip()
 
         
-
-    with open("/usr/local/etc/xray/config.json", "w") as f:
+#change this back to /usr/local/etc/xray/config.json
+    with open("/Users/meower1/Documents/testdir", "w") as f:
         json.dump(data,f, indent=4)
 
 #this function will create the vless link and start the xray service
@@ -58,20 +76,13 @@ def createlink():
     os.system("systemctl restart xray")
     os.system("systemctl enable xray")
 
-#enables google's tcp bbr
-def enablebbr():
-    if "net.core.default_qdisc=fq" in open("/etc/sysctl.conf").read():
-        print("BBR is already enabled.")
-        return
-    else:
-        print("Enabling BBR...")
-        os.system("echo \"net.core.default_qdisc=fq\" >> /etc/sysctl.conf")
-        os.system("echo \"net.ipv4.tcp_congestion_control=bbr\" >> /etc/sysctl.conf")
-        os.system("sudo sysctl -p")
-
 
 install_xray()
-enablebbr()
+try:
+    enablebbr()
+except:
+    print("failed to activate BBR.")
 generate_variables()
 createconfig()
 createlink()
+
