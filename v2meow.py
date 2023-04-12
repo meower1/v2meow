@@ -3,9 +3,6 @@ import os
 import subprocess
 import json
 
-print("change the xray path back")
-
-
 
 def xtls_reality():
 
@@ -71,7 +68,7 @@ def xtls_reality():
 
     #this function will create the vless link and start the xray service
     def createlink():
-        print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#name""".replace(" ",""))
+        print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
 
@@ -150,7 +147,7 @@ def h2_reality():
 
     #this function will create the vless link and start the xray service
     def createlink():
-        print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni=www.samsung.com&sid={shortid}#name""".replace(" ", ""))
+        print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni=www.samsung.com&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
 
@@ -229,9 +226,10 @@ def grpc_reality():
 
     #this function will create the vless link and start the xray service
     def createlink():
-        print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni=www.samsung.com&sid={shortid}#name""".replace(" ", ""))
+        print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni=www.samsung.com&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
+        
 
 
     install_xray()
@@ -243,3 +241,20 @@ def grpc_reality():
     createconfig()
     createlink()
 
+def delete_reality():
+    os.system("bash -c \"$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)\" @ remove")
+
+def exit():
+    pass
+
+mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Uninstall \n5. exit \nOption : "))
+if mode == 1:
+    xtls_reality()
+elif mode == 2:
+    grpc_reality()
+elif mode == 3:
+    h2_reality()
+elif mode == 4:
+    delete_reality()
+elif mode == 5:
+    exit()
