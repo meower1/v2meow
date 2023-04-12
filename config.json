@@ -22,7 +22,7 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "chika",
+                        "id": "chika", 
                         "flow": "xtls-rprx-vision"
                     }
                 ],
@@ -33,12 +33,12 @@
                 "security": "reality",
                 "realitySettings": {
                     "show": false, 
-                    "dest": "www.samsung.com:443", 
+                    "dest": "www.lovelive-anime.jp:443", 
                     "xver": 0,
                     "serverNames": [ 
-                        "www.samsung.com"
+                        "www.lovelive-anime.jp"
                     ],
-                    "privateKey": "2KZ4uouMKgI8nR-LDJNP1_MHisCJOmKGj9jUjZLncVU",
+                    "privateKey": "2KZ4uouMKgI8nR-LDJNP1_MHisCJOmKGj9jUjZLncVU", 
                     "shortIds": [ 
                         "6ba85179e30d4fc2" 
                     ]
