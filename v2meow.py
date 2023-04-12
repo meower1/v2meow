@@ -3,17 +3,14 @@ import os
 import subprocess
 import json
 
-print("REMINDER : check the xray config path MEOOW")
-print("REMINDER : check the xray config path MEOOW")
-print("REMINDER : check the xray config path MEOOW")
-print("REMINDER : check the xray config path MEOOW")
+print("change the xray path back")
+
+
 
 def install_xray():
     os.system("bash -c \"$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)\" @ install -u root --version 1.8.0")
 
 #enables google's tcp bbr
-
-
 def enablebbr():
     if "net.core.default_qdisc=fq" in open("/etc/sysctl.conf").read():
         print("BBR is already enabled.")
@@ -53,7 +50,7 @@ def generate_variables():
     serverip = serverip_byte.decode("utf-8")
 
 def createconfig():
-    with open("configs/config.json", "r") as f:
+    with open("configs/configxtls.json", "r") as f:
         data = json.load(f)
 
         #uuid
@@ -66,8 +63,8 @@ def createconfig():
         data["inbounds"][0]["streamSettings"]["realitySettings"]["shortIds"][0] = shortid.rstrip()
 
         
-#change this back to /usr/local/etc/xray/config.json
-    with open("/Users/meower1/Documents/testdir", "w") as f:
+    #change back to /usr/local/etc/xray/config.json
+    with open("/Users/meower1/Documents/testdir/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
 #this function will create the vless link and start the xray service
@@ -85,4 +82,3 @@ except:
 generate_variables()
 createconfig()
 createlink()
-
