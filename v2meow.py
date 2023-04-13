@@ -3,7 +3,6 @@ import os
 import subprocess
 import json
 
-
 def xtls_reality():
 
     def install_xray():
@@ -68,6 +67,9 @@ def xtls_reality():
 
     #this function will create the vless link and start the xray service
     def createlink():
+        os.system("clear")
+        print("Thank you for using my script :).\n Your link is : \n")
+
         print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
@@ -147,6 +149,9 @@ def h2_reality():
 
     #this function will create the vless link and start the xray service
     def createlink():
+        os.system("clear")
+        print("Thank you for using my script :).\n Your link is : \n")
+
         print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni=www.samsung.com&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
@@ -226,6 +231,9 @@ def grpc_reality():
 
     #this function will create the vless link and start the xray service
     def createlink():
+        os.system("clear")
+        print("Thank you for using my script :).\n Your link is : \n")
+
         print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni=www.samsung.com&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
@@ -247,8 +255,62 @@ def delete_reality():
 def exit():
     pass
 
+def manual_mode():
+    os.system("clear")
+    mode = int(input("Select protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \nOption :  "))  
+
+    if mode == 1:
+        xtls_reality()
+        config = "configs/configxtls.json"
+    elif mode == 2:
+        grpc_reality()
+        config = "configs/configgrpc.json"
+    elif mode == 3:
+        h2_reality()
+        config = "configs/configh2.json"
+
+    os.system("clear")
+
+    with open(config, "r") as f:
+        data = json.load(f)
+    
+    sni_dest = input("Enter SNI : ")
+
+    #uuid
+    data["inbounds"][0]["settings"]["clients"][0]["id"] = uuid.rstrip()
+
+    #private_key
+    data["inbounds"][0]["streamSettings"]["realitySettings"]["privateKey"] = private_key.rstrip()
+
+    #shortids
+    data["inbounds"][0]["streamSettings"]["realitySettings"]["shortIds"][0] = shortid.rstrip()
+
+    data["inbounds"][0]["streamSettings"]["realitySettings"]["serverNames"][0] = sni_dest
+
+    data["inbounds"][0]["streamSettings"]["realitySettings"]["dest"] = f"{sni_dest}:443"
+
+    #change back to /usr/local/etc/xray/config.json
+    with open("/usr/local/etc/xray/config.json", "w") as f:
+        json.dump(data,f, indent=4)
+
+    os.system("systemctl restart xray")
+    os.system("systemctl enable xray")
+    os.system("clear")
+
+    print(f"Thank you for using my script :).\nCustom sni : {sni_dest}\nYour link is : \n")
+
+    if mode == 1:
+        print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni_dest}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
+    elif mode == 2:
+        print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni_dest}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
+    elif mode == 3:
+        print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni_dest}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
+
+
+
 def menu():
-    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Uninstall \n5. exit \nOption : "))
+    os.system("clear")
+    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Manual Mode \n5. Uninstall \n6. exit \nOption : "))
     if mode == 1:
         xtls_reality()
     elif mode == 2:
@@ -256,8 +318,10 @@ def menu():
     elif mode == 3:
         h2_reality()
     elif mode == 4:
-        delete_reality()
+        manual_mode()
     elif mode == 5:
+        delete_reality()
+    elif mode == 6:
         exit()
 
 try : 
@@ -266,3 +330,4 @@ except ValueError:
     print("invalid input")
 
 #manual mode snapshot #1
+
