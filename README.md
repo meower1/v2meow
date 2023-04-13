@@ -1,7 +1,3 @@
-![Logo](<img width="419" alt="image" src="https://user-images.githubusercontent.com/109747197/231702321-98a31d90-afef-46c4-bc8e-81ad0ced6668.png">
-)
-
-
 # Description
 
 One-click Vless-Reality setup with customizable transmission protocol 
