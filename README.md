@@ -1,14 +1,19 @@
-Simple vless reality setup script with the option to pick transmission protocol
+![Logo](<img width="419" alt="image" src="https://user-images.githubusercontent.com/109747197/231702321-98a31d90-afef-46c4-bc8e-81ad0ced6668.png">
+)
 
-following modes : 
 
-vless xtls utls reality
+# Description
 
-vless h2 utls reality
+One-click Vless-Reality setup with customizable transmission protocol 
 
-vless grpc utls reality
+## Supported modes
+- vless xtls utls reality
 
-Setup:
+- vless h2 utls reality
+
+- vless grpc utls reality
+
+## Setup:
 
 1- git clone https://github.com/meower1/v2meow.git
 
@@ -16,22 +21,21 @@ Setup:
 
 3-sudo python3 v2meow.py
 
-=======================================================================================================================
+## License
+[MIT License](LICENSE)
 
-دوستان من این پروژه رو توی وقت آزادم نوشتم برای اون عزیزانی که مشکل با ستاپ کردن reality دارن. میتونه اینارو اتوماتیک بسازه 
+# Persian
 
-vless xtls utls reality
+این اسکریپت بصورت اتوماتیک در یک کلیک برای شما سرور ریالیتی میسازه. حالت های پشتیبانی شده بالا نوشته شده. 
 
-vless h2 utls reality
 
-vless grpc utls reality
+# طریقه نصب 
+دستور های زیر رو به ترتیب توی ترمینالتون کپی و پیست کنین.
 
-طریقه ران کردن : 
-1- مخزن رو کلون کنین
-git clone https://github.com/meower1/v2meow.git
+1- git clone https://github.com/meower1/v2meow.git
 
-2- برید داخل پوشه :
-cd v2meow
+2- cd v2meow
 
-3- فایل پایتون رو به عنوان سودو ران کنین 
-sudo python3 v2meow.py
+3-sudo python3 v2meow.py
+
+
