@@ -264,3 +264,5 @@ try :
     menu()
 except ValueError:
     print("invalid input")
+
+#manual mode snapshot #1
