@@ -247,14 +247,20 @@ def delete_reality():
 def exit():
     pass
 
-mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Uninstall \n5. exit \nOption : "))
-if mode == 1:
-    xtls_reality()
-elif mode == 2:
-    grpc_reality()
-elif mode == 3:
-    h2_reality()
-elif mode == 4:
-    delete_reality()
-elif mode == 5:
-    exit()
+def menu():
+    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Uninstall \n5. exit \nOption : "))
+    if mode == 1:
+        xtls_reality()
+    elif mode == 2:
+        grpc_reality()
+    elif mode == 3:
+        h2_reality()
+    elif mode == 4:
+        delete_reality()
+    elif mode == 5:
+        exit()
+
+try : 
+    menu()
+except ValueError:
+    print("invalid input")
