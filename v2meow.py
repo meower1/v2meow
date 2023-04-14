@@ -361,7 +361,7 @@ def find_best_sni():
 
 def menu():
     os.system("clear")
-    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Manual Mode \n5. Find the best sni for your server \n6. Uninstall \n7. exit \nOption : "))
+    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Manual Mode (manually set the sni) \n5. Find the best sni for your server \n6. Uninstall \n7. exit \nOption : "))
     if mode == 1:
         xtls_reality()
     elif mode == 2:
