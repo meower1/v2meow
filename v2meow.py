@@ -326,7 +326,7 @@ def find_best_sni():
     #this tests all the domains in sni.txt file and puts them in a list called result
     try:
         for i in sni_list:
-            x= subprocess.check_output(f"/Users/meower1/Documents/v2meow/tlsping/tlsping {i}:443", shell=True).rstrip().decode('utf-8')
+            x= subprocess.check_output(f"tlsping/tlsping {i}:443", shell=True).rstrip().decode('utf-8')
             result.append(x)
     except:    
         pass
