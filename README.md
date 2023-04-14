@@ -9,6 +9,9 @@ One-click Vless-Reality setup with customizable transmission protocol
 
 - vless grpc utls reality
 
+- manual mode (user can manually set their preffered sni)
+
+- automatic sni finder (finds the best sni for your config)
 ## Setup:
 
 1- git clone https://github.com/meower1/v2meow.git
