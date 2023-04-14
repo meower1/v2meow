@@ -3,6 +3,14 @@ import os
 import subprocess
 import json
 
+def tls_scanner():
+    tls_result = []
+    subprocess.check_output("tlsping/tlsping google.com:443").append(tls_result)
+    print(tls_result)
+
+
+
+
 def xtls_reality():
 
     def install_xray():
@@ -324,10 +332,12 @@ def menu():
     elif mode == 6:
         exit()
 
-try : 
-    menu()
-except ValueError:
-    print("invalid input")
+
+tls_scanner()
+# try : 
+#     menu()
+# except ValueError:
+#     print("invalid input")
 
 #tlsscanner snapshot 1
 
