@@ -2,13 +2,7 @@
 import os
 import subprocess
 import json
-
-def tls_scanner():
-    tls_result = []
-    subprocess.check_output("tlsping/tlsping google.com:443").append(tls_result)
-    print(tls_result)
-
-
+import re
 
 
 def xtls_reality():
@@ -314,11 +308,60 @@ def manual_mode():
     elif mode == 3:
         print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni_dest}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
 
+def find_best_sni():
+
+    result = []
+    avg_value_list = []
+    domain_ping_dict = {}
+
+    my_file = open("tlsping/sni.txt", "r")
+    
+    data = my_file.read()
+    
+    # replacing end splitting the text 
+    # when newline ('\n') is seen.
+    sni_list = data.split("\n")
+    my_file.close()
+
+    #this tests all the domains in sni.txt file and puts them in a list called result
+    try:
+        for i in sni_list:
+            x= subprocess.check_output(f"/Users/meower1/Documents/v2meow/tlsping/tlsping {i}:443", shell=True).rstrip().decode('utf-8')
+            result.append(x)
+    except:    
+        pass
+        
+    #this extracts all the avg tlsping values from the domains
+    try:
+        for j in result:
+        # use regular expressions to extract the "avg" value
+            avg_value = re.findall(r"avg/.*?ms.*?(\d+\.?\d*)ms", j )[0]
+            avg_value_list.append(avg_value)
+    except:
+        pass
+
+    # this puts the sni_list values inside domain_ping_dict as keys and the avg_value_list values as values
+
+    print(avg_value_list)
+    domain_ping_dict = {sni_list[i]: float(avg_value_list[i]) for i in range(len(sni_list))}
+
+    #this sorts the dictionary by the values in ascending order
+    sorted_dict = dict(sorted(domain_ping_dict.items(), key=lambda item: item[1]))
+
+    # #and here's our final result yayy
+    best_sni = list(sorted_dict.keys())[0]
+    print(best_sni)
+
+    os.system("clear")
+    print("Best SNI is : " + best_sni)
+    print("\nPlease use manual mode and enter this sni :)\n")
+
+
 
 
 def menu():
     os.system("clear")
-    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Manual Mode \n5. Uninstall \n6. exit \nOption : "))
+    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Manual Mode \n5. Find the best sni for your server \n6. Uninstall \n7. exit \nOption : "))
     if mode == 1:
         xtls_reality()
     elif mode == 2:
@@ -328,16 +371,17 @@ def menu():
     elif mode == 4:
         manual_mode()
     elif mode == 5:
-        delete_reality()
+        find_best_sni()
     elif mode == 6:
+        delete_reality()
+    elif mode == 7:
         exit()
 
 
-tls_scanner()
-# try : 
-#     menu()
-# except ValueError:
-#     print("invalid input")
+try : 
+    menu()
+except ValueError:
+    print("invalid input")
 
-#tlsscanner snapshot 1
+#tls scanner snapshot 1
 
