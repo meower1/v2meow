@@ -1,4 +1,3 @@
-#this script will make a vless-xtls-utls-reality config
 import os
 import subprocess
 import json
