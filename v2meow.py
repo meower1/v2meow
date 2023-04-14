@@ -329,5 +329,5 @@ try :
 except ValueError:
     print("invalid input")
 
-#manual mode snapshot #1
+#tlsscanner snapshot 1
 
