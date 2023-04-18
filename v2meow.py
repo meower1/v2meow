@@ -72,27 +72,27 @@ def createconfig(config_type):
     with open("/usr/local/etc/xray/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
-def createlink_xtls():
+def createlink_xtls(sni = "www.samsung.com"):
     os.system("clear")
     print("Thank you for using my script :).\n Your link is : \n")
 
-    print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=www.samsung.com&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
+    print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
     os.system("systemctl restart xray")
     os.system("systemctl enable xray")
 
-def createlink_h2():
+def createlink_h2(sni = "www.samsung.com"):
     os.system("clear")
     print("Thank you for using my script :).\n Your link is : \n")
 
-    print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni=www.samsung.com&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
+    print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
     os.system("systemctl restart xray")
     os.system("systemctl enable xray")
 
-def createlink_grpc():
+def createlink_grpc(sni = "www.samsung.com"):
     os.system("clear")
     print("Thank you for using my script :).\n Your link is : \n")
 
-    print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni=www.samsung.com&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
+    print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
     os.system("systemctl restart xray")
     os.system("systemctl enable xray")
 
@@ -174,11 +174,11 @@ def manual_mode():
     print(f"Thank you for using my script :).\nCustom sni : {sni_dest}\nYour link is : \n")
 
     if mode == 1:
-        createlink_xtls()
+        createlink_xtls(sni_dest)
     elif mode == 2:
-        createlink_grpc()
+        createlink_grpc(sni_dest)
     elif mode == 3:
-        createlink_h2()
+        createlink_h2(sni_dest)
 
 def find_best_sni():
 
