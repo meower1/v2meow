@@ -3,7 +3,8 @@ import subprocess
 import json
 import re
 
-#cleaning the code snapshot 1 :)
+#revamp snapshot 1
+
 xtls_path = "configs/configxtls.json"
 h2_path = "configs/configh2.json"
 grpc_path = "configs/configgrpc.json"
