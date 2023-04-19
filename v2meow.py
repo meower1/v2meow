@@ -56,7 +56,7 @@ def generate_variables():
     serverip_byte = subprocess.check_output("curl ifconfig.me", shell=True)
     serverip = serverip_byte.decode("utf-8")
 
-def createconfig(config_type):
+def createconfig(config_type,sni_dest = "www.samsung.com"):
     
     with open(config_type, "r") as f:
         data = json.load(f)
@@ -70,32 +70,63 @@ def createconfig(config_type):
         #shortids
         data["inbounds"][0]["streamSettings"]["realitySettings"]["shortIds"][0] = shortid.rstrip()
 
+        #sni
+        data["inbounds"][0]["streamSettings"]["realitySettings"]["serverNames"][0] = sni_dest
+
+        data["inbounds"][0]["streamSettings"]["realitySettings"]["dest"] = f"{sni_dest}:443"
+
     with open("/usr/local/etc/xray/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
-def createlink_xtls(sni = "www.samsung.com"):
-    os.system("clear")
-    print("Thank you for using my script :).\n Your link is : \n")
+def createlink(type,sni = "www.samsung.com"):
+    if type == "h2":
 
-    print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
-    os.system("systemctl restart xray")
-    os.system("systemctl enable xray")
+        os.system("clear")
+        print("Thank you for using my script :).\n Your link is : \n")
+        print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
+        os.system("systemctl restart xray")
+        os.system("systemctl enable xray")
 
-def createlink_h2(sni = "www.samsung.com"):
-    os.system("clear")
-    print("Thank you for using my script :).\n Your link is : \n")
+    elif type == "xtls":
 
-    print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
-    os.system("systemctl restart xray")
-    os.system("systemctl enable xray")
+        os.system("clear")
+        print("Thank you for using my script :).\n Your link is : \n")
+        print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
+        os.system("systemctl restart xray")
+        os.system("systemctl enable xray")  
 
-def createlink_grpc(sni = "www.samsung.com"):
-    os.system("clear")
-    print("Thank you for using my script :).\n Your link is : \n")
+    elif type == "grpc":
 
-    print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
-    os.system("systemctl restart xray")
-    os.system("systemctl enable xray")
+        os.system("clear")
+        print("Thank you for using my script :).\n Your link is : \n")
+        print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
+        os.system("systemctl restart xray")
+        os.system("systemctl enable xray")
+
+
+
+# def createlink_xtls(sni = "www.samsung.com"):
+#     os.system("clear")
+#     print("Thank you for using my script :).\n Your link is : \n")
+
+#     print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
+#     os.system("systemctl restart xray")
+#     os.system("systemctl enable xray")
+
+# def createlink_h2(sni = "www.samsung.com"):
+#     os.system("clear")
+#     print("Thank you for using my script :).\n Your link is : \n")
+#     print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
+#     os.system("systemctl restart xray")
+#     os.system("systemctl enable xray")
+
+# def createlink_grpc(sni = "www.samsung.com"):
+#     os.system("clear")
+#     print("Thank you for using my script :).\n Your link is : \n")
+
+#     print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
+#     os.system("systemctl restart xray")
+#     os.system("systemctl enable xray")
 
 
 def xtls_reality():
@@ -104,7 +135,7 @@ def xtls_reality():
     enablebbr()
     generate_variables()
     createconfig(xtls_path)
-    createlink_xtls()
+    createlink("xtls")
 
 
 def h2_reality():
@@ -113,7 +144,7 @@ def h2_reality():
     enablebbr()
     generate_variables()
     createconfig(h2_path)
-    createlink_h2()    
+    createlink("h2")    
     
 
 def grpc_reality():        
@@ -122,7 +153,7 @@ def grpc_reality():
     enablebbr()
     generate_variables()
     createconfig(grpc_path)
-    createlink_grpc()
+    createlink("grpc")
 
 def delete_reality():
     os.system("bash -c \"$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)\" @ remove")
@@ -131,114 +162,69 @@ def exit():
     pass
 
 def manual_mode():
+    #i want this to ask the user to select the protocol type(default xtls) then port(default 443) 
+    # then sni(default www.samsung.com) then uuid(default random) then shortid(default random)
 
     os.system("clear")
     mode = int(input("Select protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \nOption :  "))  
 
-    if mode == 1:
-        xtls_reality()
-        config = "configs/configxtls.json"
-    elif mode == 2:
-        grpc_reality()
-        config = "configs/configgrpc.json"
-    elif mode == 3:
-        h2_reality()
-        config = "configs/configh2.json"
 
-    os.system("clear")
-
-    with open(config, "r") as f:
-        data = json.load(f)
-    
-    sni_dest = input("Enter SNI : ")
-
-    #uuid
-    data["inbounds"][0]["settings"]["clients"][0]["id"] = uuid.rstrip()
-
-    #private_key
-    data["inbounds"][0]["streamSettings"]["realitySettings"]["privateKey"] = private_key.rstrip()
-
-    #shortids
-    data["inbounds"][0]["streamSettings"]["realitySettings"]["shortIds"][0] = shortid.rstrip()
-
-    data["inbounds"][0]["streamSettings"]["realitySettings"]["serverNames"][0] = sni_dest
-
-    data["inbounds"][0]["streamSettings"]["realitySettings"]["dest"] = f"{sni_dest}:443"
-
-    with open("/usr/local/etc/xray/config.json", "w") as f:
-        json.dump(data,f, indent=4)
-
-    os.system("systemctl restart xray")
-    os.system("systemctl enable xray")
-    os.system("clear")
-
-    print(f"Thank you for using my script :).\nCustom sni : {sni_dest}\nYour link is : \n")
-
-    if mode == 1:
-        createlink_xtls(sni_dest)
-    elif mode == 2:
-        createlink_grpc(sni_dest)
-    elif mode == 3:
-        createlink_h2(sni_dest)
 
 def find_best_sni():
-
-    global best_sni
-    result = []
-    avg_value_list = []
-    domain_ping_dict = {}
-
-    my_file = open("tlsping/sni.txt", "r")
-    
-    data = my_file.read()
-    
-    # replacing end splitting the text when newline ('\n') is seen.
-    sni_list = data.split("\n")
-    my_file.close()
-
-    #this tests all the domains in sni.txt file and puts them in a list called result
     try:
+        global best_sni
+        result = []
+        avg_value_list = []
+        domain_ping_dict = {}
+
+        my_file = open("tlsping/sni.txt", "r")
+        
+        data = my_file.read()
+        
+        # replacing end splitting the text when newline ('\n') is seen.
+        sni_list = data.split("\n")
+        my_file.close()
+
+        #this tests all the domains in sni.txt file and puts them in a list called result
+
         for i in sni_list:
             x = subprocess.check_output(f"tlsping/tlsping {i}:443", shell=True).rstrip().decode('utf-8')
             result.append(x)
-    except:    
-        pass
-        
-    #this extracts all the avg tlsping values from the domains
-    try:
+
+            
+        #this extracts all the avg tlsping values from the domains
+
         for j in result:
         # use regular expressions to extract the "avg" value
             avg_value = re.findall(r"avg/.*?ms.*?(\d+\.?\d*)ms", j )[0]
             avg_value_list.append(avg_value)
+
+
+        # this puts the sni_list values inside domain_ping_dict as keys and the avg_value_list values as values
+        print(avg_value_list)
+        domain_ping_dict = {sni_list[i]: float(avg_value_list[i]) for i in range(len(sni_list))}
+
+        #this sorts the dictionary by the values in ascending order
+        sorted_dict = dict(sorted(domain_ping_dict.items(), key=lambda item: item[1]))
+        
+        #final result :)
+        best_sni = list(sorted_dict.keys())[0]
+        print(best_sni)
+
+        os.system("clear")
+        print("Best SNI is : " + best_sni)
+        print("\nPlease use manual mode and enter this sni :)\n")
     except:
         pass
 
-    # this puts the sni_list values inside domain_ping_dict as keys and the avg_value_list values as values
-    print(avg_value_list)
-    domain_ping_dict = {sni_list[i]: float(avg_value_list[i]) for i in range(len(sni_list))}
-
-    #this sorts the dictionary by the values in ascending order
-    sorted_dict = dict(sorted(domain_ping_dict.items(), key=lambda item: item[1]))
-    
-    #final result :)
-    best_sni = list(sorted_dict.keys())[0]
-    print(best_sni)
-
-    os.system("clear")
-    print("Best SNI is : " + best_sni)
-    print("\nPlease use manual mode and enter this sni :)\n")
-
 def automatic_setup():
-    find_best_sni()
-
+    
     install_xray()
     enablebbr()
+    find_best_sni()
     generate_variables()
-    createconfig(xtls_path)
-    createlink_xtls(best_sni)
-
-
-
+    createconfig(xtls_path,best_sni)
+    createlink("xtls",best_sni)
 
 def menu():
     os.system("clear")
