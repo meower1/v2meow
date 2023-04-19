@@ -183,6 +183,7 @@ def manual_mode():
 
 def find_best_sni():
 
+    global best_sni
     result = []
     avg_value_list = []
     domain_ping_dict = {}
@@ -227,22 +228,30 @@ def find_best_sni():
     print("Best SNI is : " + best_sni)
     print("\nPlease use manual mode and enter this sni :)\n")
 
+def automatic_setup():
+    find_best_sni()
+
+    install_xray()
+    enablebbr()
+    generate_variables()
+    createconfig(xtls_path)
+    createlink_xtls(best_sni)
+
+
+
+
 def menu():
     os.system("clear")
-    mode = int(input("Welcome! please choose your preffered protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \n4. Manual Mode (manually set the sni) \n5. Find the best sni for your server \n6. Uninstall \n7. exit \nOption : "))
+    mode = int(input("Welcome! please choose your preffered protocol : \n1. Automatic setup \n2. Manual setup (manually set the sni) \n3. Find the best sni for your server \n4. Uninstall \n5. exit \nOption : "))
     if mode == 1:
-        xtls_reality()
+        automatic_setup()
     elif mode == 2:
-        grpc_reality()
-    elif mode == 3:
-        h2_reality()
-    elif mode == 4:
         manual_mode()
-    elif mode == 5:
+    elif mode == 3:
         find_best_sni()
-    elif mode == 6:
+    elif mode == 4:
         delete_reality()
-    elif mode == 7:
+    elif mode == 5:
         exit()
 
 try : 
