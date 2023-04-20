@@ -4,13 +4,10 @@ import json
 import re
 import uuid
 
-#revamp snapshot 1
-
 xtls_path = "configs/configxtls.json"
 h2_path = "configs/configh2.json"
 grpc_path = "configs/configgrpc.json"
 config_path = "/usr/local/etc/xray/config.json"
-
 
 def install_xray():
     os.system("bash -c \"$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)\" @ install -u root --version 1.8.0")
@@ -115,7 +112,6 @@ def xtls_reality(sni,port):
     createconfig(xtls_path,sni,port)
     createlink("xtls",sni,port)
 
-
 def h2_reality(sni,port):
 
     install_xray()
@@ -177,7 +173,6 @@ def find_best_sni():
         for i in sni_list:
             x = subprocess.check_output(f"tlsping/tlsping {i}:443", shell=True).rstrip().decode('utf-8')
             result.append(x)
-
             
         #this extracts all the avg tlsping values from the domains
 
@@ -185,7 +180,6 @@ def find_best_sni():
         # use regular expressions to extract the "avg" value
             avg_value = re.findall(r"avg/.*?ms.*?(\d+\.?\d*)ms", j )[0]
             avg_value_list.append(avg_value)
-
 
         # this puts the sni_list values inside domain_ping_dict as keys and the avg_value_list values as values
         print(avg_value_list)
