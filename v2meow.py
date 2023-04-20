@@ -2,6 +2,7 @@ import os
 import subprocess
 import json
 import re
+import uuid
 
 #revamp snapshot 1
 
@@ -56,7 +57,7 @@ def generate_variables():
     serverip_byte = subprocess.check_output("curl ifconfig.me", shell=True)
     serverip = serverip_byte.decode("utf-8")
 
-def createconfig(config_type,sni_dest = "www.samsung.com"):
+def createconfig(config_type, sni_dest = "www.samsung.com", port=443, uuid = uuid, shortid = shortid):
     
     with open(config_type, "r") as f:
         data = json.load(f)
@@ -75,15 +76,18 @@ def createconfig(config_type,sni_dest = "www.samsung.com"):
 
         data["inbounds"][0]["streamSettings"]["realitySettings"]["dest"] = f"{sni_dest}:443"
 
+        #port
+        data["inbounds"][0]["port"] = port
+
     with open("/usr/local/etc/xray/config.json", "w") as f:
         json.dump(data,f, indent=4)
 
-def createlink(type,sni = "www.samsung.com"):
+def createlink(type,sni = "www.samsung.com", port=443, uuid = uuid, shortid = shortid):
     if type == "h2":
 
         os.system("clear")
         print("Thank you for using my script :).\n Your link is : \n")
-        print(f"""vless://{uuid}@{serverip}:443?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
+        print(f"""vless://{uuid}@{serverip}:{port}?path=%2F&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=http&sni={sni}&sid={shortid}#Vless-h2-uTLS-Reality""".replace(" ", ""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
 
@@ -91,7 +95,7 @@ def createlink(type,sni = "www.samsung.com"):
 
         os.system("clear")
         print("Thank you for using my script :).\n Your link is : \n")
-        print(f"""vless://{uuid}@{serverip}:443?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
+        print(f"""vless://{uuid}@{serverip}:{port}?security=reality&encryption=none&pbk={public_key}&headerType=none&fp=chrome&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni={sni}&sid={shortid}#Vless-XTLS-uTLS-Reality""".replace(" ",""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")  
 
@@ -99,7 +103,7 @@ def createlink(type,sni = "www.samsung.com"):
 
         os.system("clear")
         print("Thank you for using my script :).\n Your link is : \n")
-        print(f"""vless://{uuid}@{serverip}:443?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
+        print(f"""vless://{uuid}@{serverip}:{port}?mode=multi&security=reality&encryption=none&pbk={public_key}&fp=chrome&type=grpc&serviceName=grpc&sni={sni}&sid={shortid}#Vless-grpc-uTLS-Reality""".replace(" ", ""))
         os.system("systemctl restart xray")
         os.system("systemctl enable xray")
 
@@ -129,7 +133,7 @@ def createlink(type,sni = "www.samsung.com"):
 #     os.system("systemctl enable xray")
 
 
-def xtls_reality():
+def xtls_reality(sni,port,uuid,shortid):
 
     install_xray()
     enablebbr()
@@ -138,7 +142,7 @@ def xtls_reality():
     createlink("xtls")
 
 
-def h2_reality():
+def h2_reality(sni,port,uuid,shortid):
 
     install_xray()
     enablebbr()
@@ -147,7 +151,7 @@ def h2_reality():
     createlink("h2")    
     
 
-def grpc_reality():        
+def grpc_reality(sni,port,uuid,shortid):        
 
     install_xray()
     enablebbr()
@@ -167,7 +171,20 @@ def manual_mode():
 
     os.system("clear")
     mode = int(input("Select protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \nOption :  "))  
+    sni = input("Please enter sni(default : www.samsung.com) : ")
+    try : 
+        port = int(input("Please enter port(default : 443) : "))
+    except TypeError:
+        print("invalid value, setting default value")
+        port = 443
 
+    uuid = input("Please enter uuid(default : random) : ")
+    shortid = input("Please enter shortid(default : random) : ")
+
+    if mode == 1:
+        xtls_reality(sni,port,uuid,shortid)
+
+    
 
 
 def find_best_sni():
