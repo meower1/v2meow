@@ -138,13 +138,21 @@ def manual_mode():
     #manually take sni and port from the user
 
     os.system("clear")
-    mode = int(input("Select protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \nOption :  "))  
-    sni = input("Please enter sni(default : www.samsung.com) : ")
-    try : 
+    try:
+        mode = int(input("Select protocol : \n1. VLESS-XTLS-uTLS-Reality (Recommended) \n2. VLESS-grpc-uTLS-Reality \n3. Vless-h2-uTLS-Reality \nOption :  "))  
+    except:
+        print("mode : xtls")
+        mode = 1
+    try:
+        sni = input("Please enter sni(default : www.samsung.com) : ")
+    except:
+        sni = "www.samsung.com"
+    try:
         port = int(input("Please enter port(default : 443) : "))
-    except TypeError:
-        print("invalid value, setting default value")
+    except:
         port = 443
+        print("invalid value, setting default value")
+
 
     if mode == 1:
         xtls_reality(sni,port)
