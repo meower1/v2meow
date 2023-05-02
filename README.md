@@ -14,11 +14,10 @@ One-click Vless-Reality setup with customizable transmission protocol
 - automatic sni finder (finds the best sni for your config)
 ## :gear: Setup:
 
-1- git clone https://github.com/meower1/v2meow.git
+Paste this in your terminal : 
 
-2- cd v2meow
+` curl https://raw.githubusercontent.com/meower1/v2meow/master/v2meow.py -o /tmp/v2meow.py && python3 /tmp/v2meow.py `
 
-3- sudo python3 v2meow.py
 
 <!-- Roadmap -->
 
