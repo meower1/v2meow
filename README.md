@@ -47,13 +47,9 @@ Contributions are always welcome!
 
 
 # طریقه نصب 
-دستور های زیر رو به ترتیب توی ترمینالتون کپی و پیست کنین.
+دستور زیر رو توی ترمینالتون کپی و پیست کنین.
 
-1- git clone https://github.com/meower1/v2meow.git
-
-2- cd v2meow
-
-3- sudo python3 v2meow.py
+` curl https://raw.githubusercontent.com/meower1/v2meow/master/v2meow.py -o /tmp/v2meow.py && python3 /tmp/v2meow.py `
 
 
 
