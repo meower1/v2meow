@@ -55,9 +55,7 @@ Contributions are always welcome!
 
 
 # طریقه نصب 
-دستور زیر رو توی ترمینالتون کپی و پیست کنین.
-
-` curl https://raw.githubusercontent.com/meower1/v2meow/master/v2meow.py -o /tmp/v2meow.py && python3 /tmp/v2meow.py `
+کامند های خاکستری مراحل installation رو به ترتیب توی ترمینال سرور مجازیتون پیست کنین 
 
 
 
