@@ -3,20 +3,30 @@
 One-click Vless-Reality setup with customizable transmission protocol 
 
 ## :eyes: Supported modes
-- vless xtls utls reality
 
-- vless h2 utls reality
+> <h3> Automatic Mode : (Recommended) </h3>
+Automatically finds the best sni for your server and makes an xtls reality config in one click 
 
-- vless grpc utls reality
 
-- manual mode (user can manually set their preffered sni)
+> <h3> Manual Mode :</h3> 
 
-- automatic sni finder (finds the best sni for your config)
+- Manually set the following :
+  - Transfer protocol (XTLS - GRPC - H2)
+  - Port (default = 443)
+  - Sni (default = auto)
+
+> <h3> Sni Finder :</h3>
+Scans a modifiable list of sni's inside tlsping/sni.txt and returns the one with the lowest tls latency
+
 ## :gear: Setup:
 
-Paste this in your terminal : 
+Paste these commands in your terminal : 
 
-` curl https://raw.githubusercontent.com/meower1/v2meow/master/v2meow.py -o /tmp/v2meow.py && python3 /tmp/v2meow.py `
+` sudo apt install git curl -y ` <br>
+` git clone https://github.com/meower1/v2meow.git `<br>
+` cd v2meow `<br>
+` python3 v2meow.py `
+
 
 
 <!-- Roadmap -->
@@ -27,10 +37,8 @@ Paste this in your terminal :
 * [x] 2. Add support for H2 and GRPC
 * [x] 3. Add manual mode for Sni
 * [ ] 4. Make it run on Docker
-* [ ] 5. Add support for Trojan-Reality
-* [ ] 6. Add user management
-* [ ] 7. Add a status checker function
-* [ ] 8. Add Ascii art and better visuals
+* [ ] 5. Add a status checker function
+* [ ] 6. Add Ascii art and better visuals
 
 <!-- Contributing -->
 
