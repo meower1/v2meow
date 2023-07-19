@@ -152,7 +152,7 @@ def manual_mode():
 
     if mode == "":
         print("mode : XTLS")
-        mode = 1
+        mode = "1"
     
     sni = input("Please enter sni (default : Automatic) : ")
     if sni == "":
