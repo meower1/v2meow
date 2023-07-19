@@ -154,9 +154,10 @@ def manual_mode():
         print("mode : XTLS")
         mode = 1
     
-    sni = input("Please enter sni (default : www.samsung.com) : ")
+    sni = input("Please enter sni (default : Automatic) : ")
     if sni == "":
-        sni = "www.samsung.com"
+        find_best_sni()
+        sni = best_sni
 
     try:
         port = 443
@@ -213,7 +214,6 @@ def find_best_sni():
 
         os.system("clear")
         print("Best SNI is : " + best_sni)
-        print("\nPlease use manual mode and enter this sni :)\n")
     except:
         pass
 
@@ -249,5 +249,5 @@ except ValueError:
     print("invalid input")
     exit()
 except KeyboardInterrupt:
-    print(" Hope to see you again o/ ")
+    print("Hope to see you again o/ ")
     exit()
